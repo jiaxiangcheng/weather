@@ -19,4 +19,4 @@ const AppContainer = () =>
         <App/>
     </Provider>
 
-AppRegistry.registerComponent(appName, () => App);
+AppRegistry.registerComponent(appName, () => AppContainer);

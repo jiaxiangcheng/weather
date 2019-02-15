@@ -9,7 +9,8 @@
 
 import React from "react";
 import { Platform, StyleSheet, Text, View, Button, TextInput, Image } from "react-native";
-// import { setMainInfo } from './src/actions'
+import { setMainInfo } from './src/actions'
+import { connect } from 'react-redux';
 
 const instructions = Platform.select({
   ios: "Press Cmd+R to reload,\n" + "Cmd+D or shake for dev menu",
