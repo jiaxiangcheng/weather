@@ -1,11 +1,13 @@
-export const setMainInfo = () => {
+export const setMainInfo = (mainInfo) => {
     return {
-        type: 'SETMAININFO'
+        type: 'SETMAININFO',
+        payload: mainInfo
     };
 };
 
-export const setSearchCityName = () => {
+export const setSearchCityName = (cityName) => {
     return {
-        type: 'SETSEARCHCITYNAME'
+        type: 'SETSEARCHCITYNAME',
+        payload: cityName
     };
 };

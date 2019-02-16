@@ -5,8 +5,9 @@ const initialState = {
 
 const apiDataReducer = (state = initialState, action) => {
     switch(action.type) {
-        case 'SETBASICINFO' : 
+        case 'SETMAININFO' : 
             return {
+                ...state,
                 basicTempInfo: action.payload
             };
         case 'SETSEARCHCITYNAME' :

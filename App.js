@@ -8,55 +8,41 @@
  */
 
 import React from "react";
-import { Platform, StyleSheet, Text, View, Button, TextInput, Image } from "react-native";
-import { setMainInfo } from './src/actions'
+import { StyleSheet, Text, View, Button, TextInput, Image } from "react-native";
+import { setMainInfo, setSearchCityName } from './src/actions'
 import { connect } from 'react-redux';
 
-const instructions = Platform.select({
-  ios: "Press Cmd+R to reload,\n" + "Cmd+D or shake for dev menu",
-  android:
-    "Double tap R on your keyboard to reload,\n" +
-    "Shake or press menu button for dev menu"
-});
-
 class App extends React.Component {
-  
-  constructor(props) {
-    super(props);
-    this.state = {
-      cityName: null,
-      data: null
-    };    
-  }
 
-  componentDidMount() {
-    
-  }
-
-  async getWeather() {
-    try {
-      console.log('city to be consult: ' + this.state.cityName);
-      let response = await fetch('http://api.openweathermap.org/data/2.5/weather?q=' + this.state.cityName + '&units=metric' + '&appid=53c1655ff71ff1a77a97842459d3e10e');
-      let responseJson = await response.json();
-      let mainInfo = await responseJson.main;
-      console.log(mainInfo);
-      await this.setState({
-        data: mainInfo
+  getWeather() {
+      // console.log('city to be consult: ' + this.props.searchCityName);
+      // console.log('basicInfo: ' + this.props.basicTempInfo);
+      fetch('http://api.openweathermap.org/data/2.5/weather?q=' + this.props.searchCityName + '&units=metric' + '&appid=53c1655ff71ff1a77a97842459d3e10e', {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
       })
-    } catch(error) {
-      console.error(error);
-    };
-
+      .then((response) => response.json())
+      .then((responseData) => {
+          // console.log(responseData);
+          this.props.setMainInfo(responseData.main);
+      })
+      .catch((err)=> {
+        console.log('Some errors occured');
+        console.log(err);
+      });
   }
   renderElement () {
-    if (this.state.data != null) {
+    if (this.props.basicTempInfo != null) {
       return (
         <View>
-          <Text>Humidity: {this.state.cityName == null? '' : this.state.data.humidity}</Text>
-          <Text>Pressure: {this.state.cityName == null? '' : this.state.data.pressure}</Text>
-          <Text>Current Temp: {this.state.cityName == null? '' : this.state.data.temp + ' C'}</Text>
-          <Text>Max Temp: {this.state.cityName == null? '' : this.state.data.temp_max + ' C'}</Text>
-          <Text>Min Temp: {this.state.cityName == null? '' : this.state.data.temp_min + ' C'}</Text>
+          <Text>Humidity: {this.props.searchCityName == null? '' : this.props.basicTempInfo.humidity}</Text>
+          <Text>Pressure: {this.props.searchCityName == null? '' : this.props.basicTempInfo.pressure}</Text>
+          <Text>Current Temp: {this.props.searchCityName == null? '' : this.props.basicTempInfo.temp + ' C'}</Text>
+          <Text>Max Temp: {this.props.searchCityName == null? '' : this.props.basicTempInfo.temp_max + ' C'}</Text>
+          <Text>Min Temp: {this.props.searchCityName == null? '' : this.props.basicTempInfo.temp_min + ' C'}</Text>
         </View>
       );
     } else return null;
@@ -72,9 +58,9 @@ class App extends React.Component {
       /> 
         <TextInput 
           style={styles.cityTextInput} 
-          onChangeText={(cityName) => this.setState({cityName})} 
-          value={this.state.username}
-          placeholder='City name'
+          onChangeText={(cityName) => this.props.setSearchCityName(cityName)} 
+          value={this.props.searchCityName}
+          placeholder='Enter the city name'
         ></TextInput>
         {this.renderElement()}
         <Button title="Get the weather" onPress={this.getWeather.bind(this)}></Button>
@@ -115,8 +101,9 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    basicTempInfo: state.basicTempInfo
+    basicTempInfo: state.basicTempInfo,
+    searchCityName: state.searchCityName
   }
 }
 
-export default connect(mapStateToProps, { setMainInfo })(App);
+export default connect(mapStateToProps, { setMainInfo, setSearchCityName })(App);
