@@ -1,46 +1,91 @@
 import React from "react";
 import { StyleSheet, Text, View, Button, TextInput, Image } from "react-native";
-import { setMainInfo, setSearchCityName } from '../actions'
+import { setMainInfo, setSearchCityName, setCurrentLocation } from '../actions'
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux'
 
 class Weather extends React.Component {
 
-    getWeather() {
-        // console.log('city to be consult: ' + this.props.searchCityName);
-        // console.log('basicInfo: ' + this.props.basicTempInfo);
-        fetch('http://api.openweathermap.org/data/2.5/weather?q=' + this.props.searchCityName + '&units=metric' + '&appid=53c1655ff71ff1a77a97842459d3e10e', {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          }
-        })
-        .then((response) => response.json())
-        .then((responseData) => {
-            // console.log(responseData);
-            this.props.setMainInfo(responseData.main);
-        })
-        .catch((err)=> {
-          console.log('Some errors occured');
-          console.log(err);
-        });
+    getCurrentLocation = () => {
+      return new Promise(function (resolve, reject) {
+        navigator.geolocation.getCurrentPosition(resolve, reject, options);
+      });
+      // navigator.geolocation.getCurrentPosition(position => {
+      //   this.props.setCurrentLocation(position.coords);
+      // });
     }
-    renderElement () {
+
+    getWeather (isCurrentLocation) {
+        var url;
+        if (isCurrentLocation) {
+          // Getposition promise wrapper
+          var getPosition = function (options) {
+            return new Promise(function (resolve, reject) {
+              navigator.geolocation.getCurrentPosition(resolve, reject, options);
+            });
+          }
+          getPosition()
+            .then((position) => {
+              // console.log(position);
+              this.props.setCurrentLocation(position.coords);
+              // console.log(this.props.currentLocation);
+              url = 'http://api.openweathermap.org/data/2.5/weather?lat=' 
+              + this.props.currentLocation.latitude + '&lon=' + this.props.currentLocation.longitude + 
+              '&units=metric' + '&appid=53c1655ff71ff1a77a97842459d3e10e';
+              fetch(url, {
+                method: 'GET',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+                }
+              })
+              .then((response) => response.json())
+              .then((responseData) => {
+                  this.props.setMainInfo(responseData.main);
+              })
+              .catch((err)=> {
+                console.log('Some errors occured');
+                console.log(err);
+              });
+            })
+            .catch((err) => {
+              console.error(err.message);
+            });
+        } else {
+          url = 'http://api.openweathermap.org/data/2.5/weather?q=' + this.props.searchCityName + 
+          '&units=metric' + '&appid=53c1655ff71ff1a77a97842459d3e10e';
+          fetch(url, {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            }
+          })
+          .then((response) => response.json())
+          .then((responseData) => {
+              this.props.setMainInfo(responseData.main);
+          })
+          .catch((err)=> {
+            console.log('Some errors occured');
+            console.log(err);
+          });
+        };
+    }
+
+    weatherInfo () {
       if (this.props.basicTempInfo != null) {
         return (
           <View>
-            <Text>Humidity: {this.props.searchCityName == null? '' : this.props.basicTempInfo.humidity}</Text>
-            <Text>Pressure: {this.props.searchCityName == null? '' : this.props.basicTempInfo.pressure}</Text>
-            <Text>Current Temp: {this.props.searchCityName == null? '' : this.props.basicTempInfo.temp + ' C'}</Text>
-            <Text>Max Temp: {this.props.searchCityName == null? '' : this.props.basicTempInfo.temp_max + ' C'}</Text>
-            <Text>Min Temp: {this.props.searchCityName == null? '' : this.props.basicTempInfo.temp_min + ' C'}</Text>
+            <Text>Humidity: {this.props.basicTempInfo.humidity}</Text>
+            <Text>Pressure: {this.props.basicTempInfo.pressure}</Text>
+            <Text>Current Temp: {this.props.basicTempInfo.temp + ' C'}</Text>
+            <Text>Max Temp: {this.props.basicTempInfo.temp_max + ' C'}</Text>
+            <Text>Min Temp: {this.props.basicTempInfo.temp_min + ' C'}</Text>
           </View>
         );
       } else return null;
     }
-    
-  
+
     render() {
       return (
         <View style={styles.container}>
@@ -48,15 +93,15 @@ class Weather extends React.Component {
           style={{width: 100, height: 100, resizeMode : 'stretch', marginBottom: 20 }}
           source={require('../../images/icon.png')}  
         /> 
-        <Text>sdfsdfdsfsdfds</Text>
           <TextInput 
             style={styles.cityTextInput} 
             onChangeText={(cityName) => this.props.setSearchCityName(cityName)} 
             value={this.props.searchCityName}
             placeholder='Enter the city name'
           ></TextInput>
-          {this.renderElement()}
-          <Button title="Get the weather" onPress={this.getWeather.bind(this)}></Button>
+          {this.weatherInfo()}
+          <Button title="Get the weather" onPress={() => this.getWeather(false)}></Button>
+          <Button title="Current location weather" onPress={() => this.getWeather(true)}></Button>
           <Button title="Go to the second screen" onPress={() => Actions.test()}></Button>
         </View>
       );
@@ -75,16 +120,6 @@ class Weather extends React.Component {
       color: 'blue',
       padding: 10
     },
-    welcome: {
-      fontSize: 20,
-      textAlign: "center",
-      margin: 10
-    },
-    instructions: {
-      textAlign: "center",
-      color: "#333333",
-      marginBottom: 5
-    },
     cityTextInput: {
       width: 150,
       height: 50,
@@ -96,7 +131,8 @@ class Weather extends React.Component {
   const mapStateToProps = (state) => {
     return {
       basicTempInfo: state.basicTempInfo,
-      searchCityName: state.searchCityName
+      searchCityName: state.searchCityName,
+      currentLocation: state.currentLocation
     }
   }
   
@@ -104,6 +140,7 @@ class Weather extends React.Component {
     return {
       setMainInfo: (mainInfo) => dispatch(setMainInfo(mainInfo)),
       setSearchCityName: (cityName) => dispatch(setSearchCityName(cityName)),
+      setCurrentLocation: (location) => dispatch(setCurrentLocation(location))
     }
   }
   

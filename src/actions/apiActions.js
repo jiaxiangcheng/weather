@@ -11,3 +11,10 @@ export const setSearchCityName = (cityName) => {
         payload: cityName
     };
 };
+
+export const setCurrentLocation = (location) => {
+    return {
+        type: 'SETLOCATION',
+        location: location
+    };
+};

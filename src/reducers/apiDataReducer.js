@@ -1,6 +1,7 @@
 const initialState = {
     basicTempInfo: null,
-    searchCityName: null
+    searchCityName: null,
+    currentLocation: null
 };
 
 const apiDataReducer = (state = initialState, action) => {
@@ -14,6 +15,11 @@ const apiDataReducer = (state = initialState, action) => {
             return {
                 ...state,
                 searchCityName: action.payload
+            };
+        case 'SETLOCATION' :
+            return {
+                ...state,
+                currentLocation: action.location
             };
         default:
             return {
