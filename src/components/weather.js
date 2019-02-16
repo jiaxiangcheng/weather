@@ -5,20 +5,10 @@ import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux'
 
 class Weather extends React.Component {
-
-    getCurrentLocation = () => {
-      return new Promise(function (resolve, reject) {
-        navigator.geolocation.getCurrentPosition(resolve, reject, options);
-      });
-      // navigator.geolocation.getCurrentPosition(position => {
-      //   this.props.setCurrentLocation(position.coords);
-      // });
-    }
-
     getWeather (isCurrentLocation) {
         var url;
         if (isCurrentLocation) {
-          // Getposition promise wrapper
+          // Geolocation to promise wrap
           var getPosition = function (options) {
             return new Promise(function (resolve, reject) {
               navigator.geolocation.getCurrentPosition(resolve, reject, options);

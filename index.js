@@ -9,7 +9,7 @@ import React from 'react';
 
 // Screens
 import Weather from './src/components/weather';
-import Test from './src/components/test';
+import Test from './src/components/main';
 // Router
 import { Router, Stack, Scene } from 'react-native-router-flux';
 // redux
@@ -24,7 +24,7 @@ const AppContainer = () =>
         <Router>
             <Stack key="root">
                 <Scene key="weather" component={Weather} title="Weather" initial={true}/>
-                <Scene key="test" component={Test} title="Test"/>
+                <Scene key="home" component={Test} title="Home"/>
             </Stack>
         </Router>
     </Provider>
