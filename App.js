@@ -99,11 +99,18 @@ const styles = StyleSheet.create({
   }
 });
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
   return {
     basicTempInfo: state.basicTempInfo,
     searchCityName: state.searchCityName
   }
 }
 
-export default connect(mapStateToProps, { setMainInfo, setSearchCityName })(App);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setMainInfo: (mainInfo) => dispatch(setMainInfo(mainInfo)),
+    setSearchCityName: (cityName) => dispatch(setSearchCityName(cityName)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
