@@ -10,21 +10,24 @@ import React from 'react';
 // Screens
 import Weather from './src/components/weather';
 import Test from './src/components/main';
+import TodoList from './src/components/todoList';
 // Router
 import { Router, Stack, Scene } from 'react-native-router-flux';
 // redux
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import apiReducer from './src/reducers/apiDataReducer';
+import rootReducers from './src/reducers/index';
 
-const store = createStore(apiReducer);
+const store = createStore(rootReducers);
+console.log(store.getState());
 
 const AppContainer = () =>  
     <Provider store={store}>
         <Router>
             <Stack key="root">
-                <Scene key="weather" component={Weather} title="Weather" initial={true}/>
-                <Scene key="home" component={Test} title="Home"/>
+                <Scene key="weather" component={Weather} title="Weather" />
+                <Scene key="main" component={Test} title="Home" initial={true} hideNavBar={true}/>
+                <Scene key="todoList" component={TodoList} title="Todo List"/>
             </Stack>
         </Router>
     </Provider>
