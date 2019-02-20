@@ -1,13 +1,19 @@
 const initialState = {
-    missions: []
+    missions: [],
+    taskName: null
 };
 
 const todoListReducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'addMission':
+        case 'ADDMISSION':
             return {
                 ...state,
-                missions: [...state.missions, action.newItem]
+                missions: [...state.missions, {name: action.newItem} ]
+            };
+        case 'SETTASKNAME' :
+            return {
+                ...state,
+                taskName: action.data
             };
         default:
             return {

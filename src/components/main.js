@@ -5,13 +5,17 @@ import { Actions } from "react-native-router-flux";
 export default class Test extends React.Component {
 
     render() {
-        return (
-            <View style={styles.container}>
-                <Button title='WEATHER' onPress={() => Actions.weather()}></Button>
-                <Button title='TODOLIST' onPress={() => Actions.todoList()}></Button>
+      return (
+        <View style={styles.container}>
+            <View style={{marginBottom: 20}}>
+              <Button title='WEATHER' onPress={() => Actions.weather()}></Button>
+              </View>
+            <View>
+              <Button title='TODOLIST' onPress={() => Actions.todoList()}></Button>
             </View>
-        );
-      };
+        </View>
+      );
+    };
 }
 
 const styles = StyleSheet.create({

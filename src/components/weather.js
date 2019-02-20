@@ -97,9 +97,7 @@ class Weather extends React.Component {
           ></TextInput>
           {this.weatherInfo()}
           
-            <View
-              style={{marginBottom : 40}}
-            >
+            <View style={{marginBottom : 40}}>
               <Button title="Get the weather" onPress={() => this.getWeather(false)}></Button>
             </View>
             <Button title="Current location weather" onPress={() => this.getWeather(true)}></Button>
