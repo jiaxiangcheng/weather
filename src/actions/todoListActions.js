@@ -1,13 +1,20 @@
 export const addMission = (newItem) => {
     return {
-        type: 'ADDMISSION',
+        type: 'addTask',
         newItem: newItem
     };
 };
 
 export const setTaskName = (taskName) => {
     return {
-        type: 'SETTASKNAME',
+        type: 'setTasName',
         data: taskName
+    };
+};
+
+export const deleteTaskByIndex = (index) => {
+    return {
+        type: 'deleteTaskByIndex',
+        index: index
     };
 };

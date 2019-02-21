@@ -1,20 +1,20 @@
 export const setMainInfo = (mainInfo) => {
     return {
-        type: 'SETMAININFO',
+        type: 'setMainInfo',
         payload: mainInfo
     };
 };
 
 export const setSearchCityName = (cityName) => {
     return {
-        type: 'SETSEARCHCITYNAME',
+        type: 'setSearchCityName',
         payload: cityName
     };
 };
 
 export const setCurrentLocation = (location) => {
     return {
-        type: 'SETLOCATION',
+        type: 'setLocation',
         location: location
     };
 };

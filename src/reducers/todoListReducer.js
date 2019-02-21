@@ -5,15 +5,21 @@ const initialState = {
 
 const todoListReducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'ADDMISSION':
+        case 'addTask':
             return {
                 ...state,
                 missions: [...state.missions, {name: action.newItem} ]
             };
-        case 'SETTASKNAME' :
+        case 'setTasName' :
             return {
                 ...state,
                 taskName: action.data
+            };
+        case 'deleteTaskByIndex' :
+            return {
+                ...state,
+                missions: [ ...state.missions.slice(0, action.index),
+                            ...state.missions.slice(action.index + 1) ]
             };
         default:
             return {

@@ -1,8 +1,8 @@
 import React from "react";
-import { StyleSheet, Text, View, Button, TextInput, Image, FlatList } from "react-native";
+import { StyleSheet, Text, View, Button, TextInput, Image, FlatList, TouchableOpacity } from "react-native";
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux'
-import { setTaskName, addMission } from '../actions';
+import { setTaskName, addMission, deleteTaskByIndex } from '../actions';
 
 class TodoList extends React.Component {
 
@@ -11,13 +11,30 @@ class TodoList extends React.Component {
       this.textInput.clear();
     }
 
+    deleteSelectTask = (index) => {
+      console.log(index);
+      this.props.deleteTaskByIndex(index);
+    }
+
     listConent () {
       if (this.props.missions && this.props.missions.length > 0) {
         return (
           <View>
               <FlatList
                 data={this.props.missions}
-                renderItem={({item}) => <Text style={styles.rowItem}>{item.name}</Text>}
+                renderItem={({item, index}) => (
+                  <View style={{flexDirection: 'row'}}>
+                    <View style={{flex: 10}}>
+                      <Text style={styles.rowItem}>{item.name}</Text>
+                    </View>
+                    <View style={{flex: 1}}>
+                    <TouchableOpacity style={styles.button} onPress={() => this.deleteSelectTask(index)}>
+                        <Text>X</Text>
+                    </TouchableOpacity>
+                    </View>
+                  </View>
+                  )
+                }
               />
           </View>
         );
@@ -35,13 +52,14 @@ class TodoList extends React.Component {
                 placeholder='Enter any task'
               >
               </TextInput>
-              <Button title='ADD' onPress={() => this.addTask()}></Button>
+              <Button style={{ flex: 1 }} title='ADD' onPress={() => this.addTask()}></Button>
             </View>
             
             <View style={styles.content}>
-              <Text style={{fontSize: 20}}>Task to do:</Text>
+              <Text style={{fontSize: 25, color: 'red'}}>Task to do:</Text>
               {this.listConent()}
             </View>
+
             <View style={styles.bottomControls}>
 
             </View>
@@ -57,12 +75,11 @@ const styles = StyleSheet.create({
       backgroundColor: "#F5FCFF",
     },
     topControls : {
-      alignSelf: 'flex-end',
       flexDirection: 'row',
       height: 50
     },
     content : {
-      marginTop: 35
+      marginTop: 25
     },
     bottomControls: {
 
@@ -71,11 +88,18 @@ const styles = StyleSheet.create({
       width: 150,
       height: 50,
       borderWidth: 1,
-      marginBottom: 20
+      marginBottom: 20,
+      flex: 10
     },
     rowItem : {
       borderWidth: 1,
-      height: 20
+      height: 40,
+      padding: 10
+    },
+    button: {
+      alignItems: 'center',
+      backgroundColor: '#DDDDDD',
+      padding: 10
     }
 });
 
@@ -89,7 +113,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         addMission: (newItem) => dispatch(addMission(newItem)),
-        setTaskName: (taskName) => dispatch(setTaskName(taskName))
+        setTaskName: (taskName) => dispatch(setTaskName(taskName)),
+        deleteTaskByIndex: (index) => dispatch(deleteTaskByIndex(index))
     }
 }
 
