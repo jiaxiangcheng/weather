@@ -2,9 +2,15 @@ import React from "react";
 import { StyleSheet, Text, View, Button, TextInput, Image, FlatList, TouchableOpacity } from "react-native";
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux'
-import { setTaskName, addMission, deleteTaskByIndex } from '../actions';
+import { setTaskName, addMission, deleteTaskByIndex, editTaskByIndex } from '../actions';
+import EditTaskModal from './editTaskModal';
 
 class TodoList extends React.Component {
+
+    constructor(props) {
+      super(props);     
+      // this.editSelectTask = this.editSelectTask.bind(this);        
+    }
 
     addTask = () => {
       this.props.addMission(this.props.taskName);
@@ -12,8 +18,13 @@ class TodoList extends React.Component {
     }
 
     deleteSelectTask = (index) => {
-      console.log(index);
       this.props.deleteTaskByIndex(index);
+    }
+
+    editSelectTask = (index) => {
+      var modal = this.refs.editModal.shwoModal();
+      
+      console.log(modal);
     }
 
     listConent () {
@@ -27,10 +38,15 @@ class TodoList extends React.Component {
                     <View style={{flex: 10}}>
                       <Text style={styles.rowItem}>{item.name}</Text>
                     </View>
+                    <View style={{flex: 2}}>
+                      <TouchableOpacity style={styles.button} onPress={() => this.editSelectTask(index)}>
+                          <Text>Edit</Text>
+                      </TouchableOpacity>
+                    </View>
                     <View style={{flex: 1}}>
-                    <TouchableOpacity style={styles.button} onPress={() => this.deleteSelectTask(index)}>
-                        <Text>X</Text>
-                    </TouchableOpacity>
+                      <TouchableOpacity style={styles.button} onPress={() => this.deleteSelectTask(index)}>
+                          <Text>X</Text>
+                      </TouchableOpacity>
                     </View>
                   </View>
                   )
@@ -63,6 +79,9 @@ class TodoList extends React.Component {
             <View style={styles.bottomControls}>
 
             </View>
+            <EditTaskModal ref={'editModal'} >
+
+            </EditTaskModal>
           </View>
         );
     }
@@ -114,7 +133,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         addMission: (newItem) => dispatch(addMission(newItem)),
         setTaskName: (taskName) => dispatch(setTaskName(taskName)),
-        deleteTaskByIndex: (index) => dispatch(deleteTaskByIndex(index))
+        deleteTaskByIndex: (index) => dispatch(deleteTaskByIndex(index)),
+        editTaskByIndex: (index) => dispatch(editTaskByIndex(index))
     }
 }
 

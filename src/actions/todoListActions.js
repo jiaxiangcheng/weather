@@ -18,3 +18,11 @@ export const deleteTaskByIndex = (index) => {
         index: index
     };
 };
+
+export const editTaskByIndex = (index) => {
+    return {
+        type: 'editTaskByIndex',
+        index: index,
+        updatedTaskName: updatedTaskName
+    };
+};
