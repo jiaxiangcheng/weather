@@ -1,10 +1,16 @@
 const initialState = {
     missions: [],
-    taskName: null
+    taskName: null,
+    index: null
 };
 
 const todoListReducer = (state = initialState, action) => {
     switch (action.type) {
+        case 'setIndex': 
+            return {
+                ...state,
+                index: action.index
+            };
         case 'addTask':
             return {
                 ...state,

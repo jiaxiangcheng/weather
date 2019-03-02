@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View, Button, TextInput, Image, FlatList, TouchableOpacity } from "react-native";
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux'
-import { setTaskName, addMission, deleteTaskByIndex, editTaskByIndex } from '../actions';
+import { setTaskName, addMission, deleteTaskByIndex, editTaskByIndex, setIndex } from '../actions';
 import EditTaskModal from './editTaskModal';
 
 class TodoList extends React.Component {
@@ -21,8 +21,17 @@ class TodoList extends React.Component {
     }
 
     editSelectTask = (index) => {
-      console.log(this.refs.editModal);
-      this.editModal.showModal();
+      this.props.setIndex(index);
+      this.refs.editModal.showModal();
+    }
+
+    onInputChanged = (changedText) => {
+      this.props.setTaskName(changedText);
+    }
+
+    updateTask = () => {
+      this.props.editTaskByIndex(this.props.index, this.props.taskName);
+      console.log('index' + this.props.index);
     }
 
     listConent () {
@@ -74,12 +83,13 @@ class TodoList extends React.Component {
               {this.listConent()}
             </View>
 
-            <View style={styles.bottomControls}>
-
-            </View>
-            <EditTaskModal ref={(editModal) => {this.editModal = editModal}}>
-
+           
+            <EditTaskModal ref={'editModal'} onInputChanged={this.onInputChanged} updateTask={this.updateTask}>
+            
             </EditTaskModal>
+
+            <View style={styles.bottomControls}>
+            </View>
           </View>
         );
     }
@@ -123,7 +133,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
     return {
       missions: state.todoListReducer.missions,
-      taskName: state.todoListReducer.taskName
+      taskName: state.todoListReducer.taskName,
+      index: state.todoListReducer.index
     }
   }
   
@@ -132,7 +143,8 @@ const mapDispatchToProps = (dispatch) => {
         addMission: (newItem) => dispatch(addMission(newItem)),
         setTaskName: (taskName) => dispatch(setTaskName(taskName)),
         deleteTaskByIndex: (index) => dispatch(deleteTaskByIndex(index)),
-        editTaskByIndex: (index) => dispatch(editTaskByIndex(index))
+        editTaskByIndex: (index, name) => dispatch(editTaskByIndex(index, name)),
+        setIndex: (index) => dispatch(setIndex(index))
     }
 }
 

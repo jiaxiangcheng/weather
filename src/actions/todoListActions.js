@@ -1,3 +1,10 @@
+export const setIndex = (index) => {
+    return {
+        type: 'setIndex',
+        index: index
+    };
+};
+
 export const addMission = (newItem) => {
     return {
         type: 'addTask',
@@ -19,7 +26,7 @@ export const deleteTaskByIndex = (index) => {
     };
 };
 
-export const editTaskByIndex = (index) => {
+export const editTaskByIndex = (index, updatedTaskName) => {
     return {
         type: 'editTaskByIndex',
         index: index,

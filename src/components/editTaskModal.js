@@ -5,11 +5,10 @@ import {
     TextInput
 } from 'react-native';
 import Modal from 'react-native-modalbox';
-import { connect } from 'react-redux';
 
 var screen = Dimensions.get('window');
 
-class EditTaskModal extends React.Component {
+export default class EditTaskModal extends React.Component {
 
     showModal = () => {
         console.log(this.refs.myModal);
@@ -30,8 +29,8 @@ class EditTaskModal extends React.Component {
                 position='center'
                 backdrop={true}
                 onClosed={() => {
-                    // alert("Modal closed");
-                    console.log('modal closed');
+                  this.props.updateTask();
+                  console.log('modal closed');
                 }}
             >
               <View>
@@ -48,7 +47,7 @@ class EditTaskModal extends React.Component {
                 <TextInput 
                   ref={input => { this.textInput = input }}
                   style={styles.textInput} 
-                  // onChangeText={(taskName) => {this.props.setTaskName(taskName)}}     
+                  onChangeText={(changedText) => this.props.onInputChanged(changedText)}
                 >
                 </TextInput>
               </View>
@@ -77,10 +76,8 @@ const styles = StyleSheet.create({
     },
     textInput: {
       width: 150,
-      height: 20,
+      height: 50,
       borderWidth: 1,
-      marginBottom: 20,
-      flex: 10
     },
     rowItem : {
       borderWidth: 1,
@@ -93,18 +90,3 @@ const styles = StyleSheet.create({
       padding: 10
     }
 });
-
-const mapStateToProps = (state) => {
-    return {
-
-    }
-  }
-  
-const mapDispatchToProps = (dispatch) => {
-    return {
-
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(EditTaskModal);
-  
