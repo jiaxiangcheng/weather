@@ -8,8 +8,7 @@ import EditTaskModal from './editTaskModal';
 class TodoList extends React.Component {
 
     constructor(props) {
-      super(props);     
-      // this.editSelectTask = this.editSelectTask.bind(this);        
+      super(props);            
     }
 
     addTask = () => {
@@ -22,9 +21,8 @@ class TodoList extends React.Component {
     }
 
     editSelectTask = (index) => {
-      var modal = this.refs.editModal.shwoModal();
-      
-      console.log(modal);
+      console.log(this.refs.editModal);
+      this.editModal.showModal();
     }
 
     listConent () {
@@ -79,7 +77,7 @@ class TodoList extends React.Component {
             <View style={styles.bottomControls}>
 
             </View>
-            <EditTaskModal ref={'editModal'} >
+            <EditTaskModal ref={(editModal) => {this.editModal = editModal}}>
 
             </EditTaskModal>
           </View>

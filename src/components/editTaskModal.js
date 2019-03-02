@@ -9,13 +9,13 @@ import { connect } from 'react-redux';
 
 var screen = Dimensions.get('window');
 
-export default class EditTaskModal extends React.Component {
+class EditTaskModal extends React.Component {
 
     showModal = () => {
         console.log(this.refs.myModal);
         this.refs.myModal.open();
     }
-
+    
     render() {
         return (
             <Modal
@@ -34,14 +34,24 @@ export default class EditTaskModal extends React.Component {
                     console.log('modal closed');
                 }}
             >
+              <View>
                 <Text style={{
-                    fontSize: 16,
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                    marginTop: 40
+                  fontSize: 16,
+                  fontWeight: 'bold',
+                  textAlign: 'center',
+                  marginTop: 40
                 }}>
-                    Edit task name
+                New task name:
                 </Text>
+              </View>
+              <View style={{ justifyContent: 'center', alignItems: 'center'}}>
+                <TextInput 
+                  ref={input => { this.textInput = input }}
+                  style={styles.textInput} 
+                  // onChangeText={(taskName) => {this.props.setTaskName(taskName)}}     
+                >
+                </TextInput>
+              </View>
             </Modal>
             
         );
@@ -65,9 +75,9 @@ const styles = StyleSheet.create({
     bottomControls: {
 
     },
-    cityTextInput: {
+    textInput: {
       width: 150,
-      height: 50,
+      height: 20,
       borderWidth: 1,
       marginBottom: 20,
       flex: 10
@@ -84,17 +94,17 @@ const styles = StyleSheet.create({
     }
 });
 
-// const mapStateToProps = (state) => {
-//     return {
+const mapStateToProps = (state) => {
+    return {
 
-//     }
-//   }
+    }
+  }
   
-// const mapDispatchToProps = (dispatch) => {
-//     return {
+const mapDispatchToProps = (dispatch) => {
+    return {
 
-//     }
-// }
+    }
+}
 
-// export default connect(mapStateToProps, mapDispatchToProps)(EditTaskModal);
+export default connect(mapStateToProps, mapDispatchToProps)(EditTaskModal);
   
