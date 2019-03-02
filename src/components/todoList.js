@@ -1,9 +1,8 @@
 import React from "react";
 import { StyleSheet, Text, View, Button, TextInput, Image, FlatList, TouchableOpacity } from "react-native";
 import { connect } from 'react-redux';
-import { Actions } from 'react-native-router-flux'
 import { setTaskName, addMission, deleteTaskByIndex, editTaskByIndex, setIndex } from '../actions';
-import EditTaskModal from './editTaskModal';
+import CustomModal from './customModal';
 
 class TodoList extends React.Component {
 
@@ -16,22 +15,21 @@ class TodoList extends React.Component {
       this.textInput.clear();
     }
 
-    deleteSelectTask = (index) => {
-      this.props.deleteTaskByIndex(index);
-    }
-
     editSelectTask = (index) => {
       this.props.setIndex(index);
       this.refs.editModal.showModal();
     }
 
-    onInputChanged = (changedText) => {
-      this.props.setTaskName(changedText);
-    }
-
     updateTask = () => {
       this.props.editTaskByIndex(this.props.index, this.props.taskName);
-      console.log('index' + this.props.index);
+    }
+
+    deleteSelectTask = (index) => {
+      this.props.deleteTaskByIndex(index);
+    }
+
+    onInputChanged = (changedText) => {
+      this.props.setTaskName(changedText);
     }
 
     listConent () {
@@ -56,8 +54,7 @@ class TodoList extends React.Component {
                       </TouchableOpacity>
                     </View>
                   </View>
-                  )
-                }
+                )}
               />
           </View>
         );
@@ -84,9 +81,8 @@ class TodoList extends React.Component {
             </View>
 
            
-            <EditTaskModal ref={'editModal'} onInputChanged={this.onInputChanged} updateTask={this.updateTask}>
-            
-            </EditTaskModal>
+            <CustomModal ref={'editModal'} onInputChanged={this.onInputChanged} updateTask={this.updateTask}>
+            </CustomModal>
 
             <View style={styles.bottomControls}>
             </View>
