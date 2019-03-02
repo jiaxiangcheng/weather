@@ -1,8 +1,14 @@
 import React from 'react';
 import {
-    StyleSheet, Text, View,
-    Platform, Dimensions, TouchableOpacity,
-    TextInput, Button
+	StyleSheet,
+	Text,
+	View,
+	Platform,
+	Dimensions,
+	TouchableOpacity,
+	TextInput,
+	Button,
+	Alert
 } from 'react-native';
 import Modal from 'react-native-modalbox';
 import validator from '../utilities/validate_wrapper';
@@ -10,22 +16,25 @@ import validator from '../utilities/validate_wrapper';
 var screen = Dimensions.get('window');
 
 export default class CustomModal extends React.Component {
-    constructor(props) {
-      super(props)
+	constructor(props) {
+		super(props)
 
-      this.state = {
-        taskName: '',
-        taskNameError: ''
-      }
-    }
+		this.state = {
+			taskNameError: ''
+		}
+	}
 
-    showModal = () => {
-        console.log(this.refs.myModal);
-        this.refs.myModal.open();
-    }
-    
+	showModal = () => {
+		console.log(this.refs.myModal);
+		this.refs.myModal.open();
+	}
+
+	isValidForm() {
+		return this.state.taskNameError == null;
+	}
+
     render() {
-        return (
+    	return (
             <Modal
                 ref={"myModal"}
                 style={{
@@ -38,13 +47,13 @@ export default class CustomModal extends React.Component {
                 position='center'
                 backdrop={true}
                 animationDuration={50}
+                backdropPressToClose={false}
                 onClosed={() => {
-                  this.props.updateTask();
                   console.log('modal closed');
                 }}
             >
               <View>
-                <Text style={{
+            	<Text style={{
                   fontSize: 16,
                   fontWeight: 'bold',
                   textAlign: 'center',
@@ -54,64 +63,80 @@ export default class CustomModal extends React.Component {
                 </Text>
               </View>
               <View style={{ justifyContent: 'center', alignItems: 'center'}}>
-                
                 <TextInput 
                   ref={input => { this.textInput = input }}
                   style={styles.textInput} 
-                  onChangeText={(changedText) => {this.props.onInputChanged(changedText); this.setState({taskName: changedText})}}
-                  onEndEditing={() => {
+                  onChangeText={(changedText) => {
+                    this.props.onInputChanged(changedText); 
                     this.setState({
-                      taskNameError: validator('taskName', this.state.taskName)
+                      taskNameError: validator('taskName', changedText)
                     });
                   }}
-                ></TextInput>
-                {this.state.taskNameError ? <Text style={{color: 'red'}}>{this.state.taskNameError}</Text> : null}
+                />
 
-                <TextInput 
-                  style={styles.textInput} 
-                ></TextInput>
+                {this.state.taskNameError ? 
+				<Text style={{color: 'red', textAlign: 'center',}}>{this.state.taskNameError}</Text>
+				: null}
 
-                <TouchableOpacity style={styles.button} onPress={() => this.refs.myModal.close()}>
-                    <Text>Save</Text>
-                </TouchableOpacity>
+                <View style={{flexDirection: 'row', marginTop: 20}}>
+                  <TouchableOpacity style={styles.saveButton} onPress={() => {
+                    if (this.isValidForm()) {
+                      this.props.updateTask();
+                      this.refs.myModal.close();
+                    }
+                    else {
+                      Alert.alert('Invalid form, please try again!');
+                    }
+                  }}>
+                      <Text>Save</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.cancelButton} onPress={() => this.refs.myModal.close()}>
+                      <Text>Cancel</Text>
+                  </TouchableOpacity>
+                </View>
+
               </View>
 
             </Modal>
-            
         );
     }
 }
 
-
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      alignContent: 'flex-start',
-      backgroundColor: "#F5FCFF",
-    },
-    topControls : {
-      flexDirection: 'row',
-      height: 50
-    },
-    content : {
-      marginTop: 25
-    },
-    bottomControls: {
+	container: {
+		flex: 1,
+		alignContent: 'flex-start',
+		backgroundColor: "#F5FCFF",
+	},
+	topControls: {
+		flexDirection: 'row',
+		height: 50
+	},
+	content: {
+		marginTop: 25
+	},
+	bottomControls: {
 
-    },
-    textInput: {
-      width: 150,
-      height: 50,
-      borderWidth: 1,
-    },
-    rowItem : {
-      borderWidth: 1,
-      height: 40,
-      padding: 10
-    },
-    button: {
-      alignItems: 'center',
-      backgroundColor: '#DDDDDD',
-      padding: 10
-    }
+	},
+	textInput: {
+		width: 150,
+		height: 50,
+		borderWidth: 1,
+	},
+	rowItem: {
+		borderWidth: 1,
+		height: 40,
+		padding: 10
+	},
+	saveButton: {
+		alignItems: 'center',
+		backgroundColor: 'green',
+		padding: 10,
+	},
+	cancelButton: {
+		alignItems: 'center',
+		backgroundColor: 'grey',
+		padding: 10
+	}
 });
