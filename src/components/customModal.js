@@ -18,7 +18,6 @@ var screen = Dimensions.get('window');
 export default class CustomModal extends React.Component {
 	constructor(props) {
 		super(props)
-
 		this.state = {
 			taskNameError: ''
 		}

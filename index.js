@@ -11,6 +11,7 @@ import React from 'react';
 import Weather from './src/components/weather';
 import Test from './src/components/main';
 import TodoList from './src/components/todoList';
+import Notification from './src/components/notification';
 // Router
 import { Router, Stack, Scene } from 'react-native-router-flux';
 // redux
@@ -28,6 +29,7 @@ const AppContainer = () =>
                 <Scene key="weather" component={Weather} title="Weather" />
                 <Scene key="main" component={Test} title="Home" initial={true} hideNavBar={true}/>
                 <Scene key="todoList" component={TodoList} title="Todo List"/>
+                <Scene key="notification" component={Notification} title="Notification"/>
             </Stack>
         </Router>
     </Provider>

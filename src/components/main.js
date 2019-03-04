@@ -9,9 +9,12 @@ export default class Test extends React.Component {
         <View style={styles.container}>
             <View style={{marginBottom: 20}}>
               <Button title='WEATHER' onPress={() => Actions.weather()}></Button>
-              </View>
-            <View>
+            </View>
+            <View style={{marginBottom: 20}}>
               <Button title='TODOLIST' onPress={() => Actions.todoList()}></Button>
+            </View>
+            <View>
+              <Button title='NOTIFICATION' onPress={() => Actions.notification()}></Button>
             </View>
         </View>
       );
