@@ -10,6 +10,7 @@
     "pubnub-react": "^1.2.0",
     "react": "16.6.3",
     "react-native": "0.58.4",
+    "react-native-google-signin": "^0.10.0",
     "react-native-modalbox": "^1.7.1",
     "react-native-popup-dialog": "^0.17.0",
     "react-native-push-notification": "^3.1.2",

@@ -13,13 +13,19 @@ export default class Test extends React.Component {
             <View style={{marginBottom: 20}}>
               <Button title='TODOLIST' onPress={() => Actions.todoList()}></Button>
             </View>
-            <View>
+            <View style={{marginBottom: 20}}>
               <Button title='NOTIFICATION' onPress={() => Actions.notification()}></Button>
+            </View>
+            <View>
+              <Button title='POSTS' onPress={() => Actions.posts()}></Button>
             </View>
         </View>
       );
     };
 }
+
+
+// 934113055381-1i5fhbaqrsuq5h7qe3q18j8dtgh15nlj.apps.googleusercontent.com
 
 const styles = StyleSheet.create({
     container: {

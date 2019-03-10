@@ -18,6 +18,7 @@ import { Router, Stack, Scene } from 'react-native-router-flux';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import rootReducers from './src/reducers/index';
+import Posts from './src/components/posts.js';
 
 const store = createStore(rootReducers);
 console.log(store.getState());
@@ -30,6 +31,7 @@ const AppContainer = () =>
                 <Scene key="main" component={Test} title="Home" initial={true} hideNavBar={true}/>
                 <Scene key="todoList" component={TodoList} title="Todo List"/>
                 <Scene key="notification" component={Notification} title="Notification"/>
+                <Scene key="posts" component={Posts} title="Posts"/>
             </Stack>
         </Router>
     </Provider>

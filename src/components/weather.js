@@ -2,11 +2,9 @@ import React from "react";
 import { StyleSheet, Text, View, Button, TextInput, Image } from "react-native";
 import { setMainInfo, setSearchCityName, setCurrentLocation } from '../actions'
 import { connect } from 'react-redux';
-import { Actions } from 'react-native-router-flux'
 
 class Weather extends React.Component {
     getWeather (isCurrentLocation) {
-      console.log('entro');
       var url;
       if (isCurrentLocation) {
         // Geolocation to promise wrap

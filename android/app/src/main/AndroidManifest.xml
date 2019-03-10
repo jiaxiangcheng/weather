@@ -3,15 +3,18 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <!-- Access the user current location -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- Access the user current location -->
+
+     <!-- PUSH NOTIFICATIONs SETTINGS-->
     <permission
         android:name="${applicationId}.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
     <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
-    <!-- < Only if you're using GCM or localNotificationSchedule() > -->
- 
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+     <!-- PUSH NOTIFICATIONs SETTINGS-->
 
     <application
       android:name=".MainApplication"
